@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 
 import game.GameLogic;
 
@@ -23,7 +22,7 @@ import java.awt.Insets;
 import java.awt.event.ActionListener;
 
 public class GameInterface extends JFrame {
-    /**
+    /*
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
@@ -34,7 +33,7 @@ public class GameInterface extends JFrame {
 
     public GameInterface() {
         setTitle("War Card Game");
-        setSize(600, 500);
+        setSize(600, 500); // Set pixel size
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
 

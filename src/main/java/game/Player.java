@@ -19,7 +19,11 @@ public class Player implements Serializable {
     public void receiveCard(Card card) {
         cards.add(card);
     }
-
+    
+    public void shufflePlayerCards() {
+    	
+    }
+    
     public Card playCard() {
         return cards.isEmpty() ? null : cards.remove(0);
     }
