@@ -1,7 +1,6 @@
-package main;
+package common_main;
 
 import javax.swing.SwingUtilities;
-
 import ui.GameInterface;
 
 public class Main {
@@ -12,7 +11,7 @@ public class Main {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            
+
             GameInterface window = new GameInterface();
             window.setLocationRelativeTo(null);
             window.setVisible(true);

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Player implements Serializable {
     /**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private final String name;

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class GameLogic implements Serializable {
     /**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private final Player human;
@@ -26,7 +26,7 @@ public class GameLogic implements Serializable {
 
         Card humanCard = human.playCard();
         Card computerCard = computer.playCard();
-        
+
         if (humanCard == null || computerCard == null) {
             return gameOver();
         }
@@ -35,7 +35,7 @@ public class GameLogic implements Serializable {
         currentPot.add(computerCard);
 
         int comparison = Integer.compare(humanCard.getValue(), computerCard.getValue());
-        
+
         if (comparison > 0) {
             human.getCards().addAll(currentPot);
             currentPot.clear();
@@ -61,7 +61,7 @@ public class GameLogic implements Serializable {
         // Add face-up cards
         Card humanCard = human.playCard();
         Card computerCard = computer.playCard();
-        
+
         if (humanCard == null || computerCard == null) {
             return gameOver();
         }
@@ -70,7 +70,7 @@ public class GameLogic implements Serializable {
         currentPot.add(computerCard);
 
         int comparison = Integer.compare(humanCard.getValue(), computerCard.getValue());
-        
+
         if (comparison > 0) {
             human.getCards().addAll(currentPot);
             currentPot.clear();

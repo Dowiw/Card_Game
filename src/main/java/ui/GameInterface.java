@@ -14,6 +14,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+
+import game.GameLogic;
+
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
@@ -21,10 +24,10 @@ import java.awt.event.ActionListener;
 
 public class GameInterface extends JFrame {
     /**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	private game.GameLogic game;
+	private GameLogic game;
     private JLabel playerCardCount;
     private JLabel computerCardCount;
     private JTextArea gameLog;
@@ -44,15 +47,15 @@ public class GameInterface extends JFrame {
 
     private void setupMenu() {
         JMenuBar menuBar = new JMenuBar();
-        
+
         JMenu fileMenu = new JMenu("File");
         fileMenu.add(createMenuItem("New Game", e -> startNewGame()));
         fileMenu.add(createMenuItem("Save Game", e -> saveGame()));
         fileMenu.add(createMenuItem("Load Game", e -> loadGame()));
-        
+
         JMenu helpMenu = new JMenu("Help");
         helpMenu.add(createMenuItem("About", e -> showAbout()));
-        
+
         menuBar.add(fileMenu);
         menuBar.add(helpMenu);
         setJMenuBar(menuBar);
@@ -66,38 +69,38 @@ public class GameInterface extends JFrame {
 
     private void setupGameArea() {
         JPanel gamePanel = new JPanel(new BorderLayout(10, 10));
-        
+
         JPanel countPanel = new JPanel(new GridLayout(1, 2, 10, 10));
         playerCardCount = new JLabel("Your cards: 26", SwingConstants.CENTER);
         computerCardCount = new JLabel("Computer cards: 26", SwingConstants.CENTER);
         countPanel.add(playerCardCount);
         countPanel.add(computerCardCount);
-        
+
         gameLog = new JTextArea(10, 40);
         gameLog.setEditable(false);
         gameLog.setMargin(new Insets(5, 5, 5, 5));
-        
+
         gamePanel.add(countPanel, BorderLayout.NORTH);
         gamePanel.add(new JScrollPane(gameLog), BorderLayout.CENTER);
-        
+
         add(gamePanel, BorderLayout.CENTER);
     }
 
     private void setupControls() {
         JPanel controlPanel = new JPanel();
-        
+
         JButton playButton = new JButton("Play Round");
         playButton.addActionListener(e -> playRound());
         controlPanel.add(playButton);
-        
+
         add(controlPanel, BorderLayout.SOUTH);
     }
 
     private void startNewGame() {
         String name = JOptionPane.showInputDialog(this, "Enter your name:", "New Game", JOptionPane.PLAIN_MESSAGE);
         if (name == null || name.trim().isEmpty()) name = "Player";
-        
-        game = new game.GameLogic(name);
+
+        game = new GameLogic(name);
         updateUI();
         gameLog.setText("New game started! Good luck, " + name + "!\n");
     }
@@ -107,14 +110,14 @@ public class GameInterface extends JFrame {
             startNewGame();
             return;
         }
-        
+
         String result = game.playRound();
         gameLog.append(result + "\n");
         updateUI();
         gameLog.setCaretPosition(gameLog.getDocument().getLength());
-        
+
         if (!game.getHumanPlayer().hasCards() || !game.getComputerPlayer().hasCards()) {
-            JOptionPane.showMessageDialog(this, 
+            JOptionPane.showMessageDialog(this,
                 game.getHumanPlayer().hasCards() ? "You win!" : "Computer wins!",
                 "Game Over", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -132,7 +135,7 @@ public class GameInterface extends JFrame {
             JOptionPane.showMessageDialog(this, "No game to save!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         javax.swing.JFileChooser chooser = new javax.swing.JFileChooser();
         if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
             try {
