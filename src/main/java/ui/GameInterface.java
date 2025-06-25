@@ -4,7 +4,6 @@ package ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
@@ -16,8 +15,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 import game.GameLogic;
@@ -142,7 +139,15 @@ public class GameInterface extends JFrame {
         }
 
         // start a round
-        String result = game.playRound();
+        String result;
+        
+        if (game.isWarInProgress()) {
+            result = game.handleWar();
+        } else {
+            result = game.playRound();
+        }
+        gameLog.setText(result);
+        updateUI();
         
         // put result in gameLogs
         gameLog.setText(result);
@@ -219,4 +224,22 @@ public class GameInterface extends JFrame {
             "3. Winner takes all cards",
             "About", JOptionPane.INFORMATION_MESSAGE);
     }
+    
+//    JPanel playerHandPanel = new JPanel();
+//    playerHandPanel.setLayout(new FlowLayout(FlowLayout.LEFT)); // or new BoxLayout(playerHandPanel, BoxLayout.X_AXIS)
+//
+//    // Clear previous images
+//    playerHandPanel.removeAll();
+//
+//    // Show up to 5 cards
+//    int cardsToShow = Math.min(5, player.getCards().size());
+//    for (int i = 0; i < cardsToShow; i++) {
+//        Card card = player.getCards().get(i);
+//        JLabel cardLabel = new JLabel(new ImageIcon(card.getImagePath())); // You'll need a method to get image paths for cards
+//        playerHandPanel.add(cardLabel);
+//    }
+//
+//    // Refresh UI
+//    playerHandPanel.revalidate();
+//    playerHandPanel.repaint();
 }
