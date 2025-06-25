@@ -12,7 +12,9 @@ public class Deck {
         System.out.println("Loading Images...");
         initializeDeck();
 
-        shuffle();
+        // shuffle cards using shuffle method
+        Collections.shuffle(cards);
+        
         System.out.println("Cards shuffled.");
     }
 
@@ -27,11 +29,6 @@ public class Deck {
                 cards.add(new Card(suit, ranks[i], values[i]));
             }
         }
-    }
-
-    // method to shuffle cards using collections library
-    public void shuffle() {
-        Collections.shuffle(cards);
     }
 
     public void deal(Player player1, Player player2) {

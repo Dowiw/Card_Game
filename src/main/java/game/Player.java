@@ -17,10 +17,6 @@ public class Player implements Serializable {
         cards.add(card);
     }
     
-//    public void shufflePlayerCards() {
-//    	
-//    }
-    
     public Card playCard() {
         return cards.isEmpty() ? null : cards.remove(0);
     }
