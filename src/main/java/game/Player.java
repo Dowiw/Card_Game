@@ -4,9 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Player implements Serializable {
-    /**
-	 *
-	 */
 	private static final long serialVersionUID = 1L;
 	private final String name;
     private final ArrayList<Card> cards;
@@ -20,9 +17,9 @@ public class Player implements Serializable {
         cards.add(card);
     }
     
-    public void shufflePlayerCards() {
-    	
-    }
+//    public void shufflePlayerCards() {
+//    	
+//    }
     
     public Card playCard() {
         return cards.isEmpty() ? null : cards.remove(0);

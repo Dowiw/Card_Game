@@ -4,9 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class GameLogic implements Serializable {
-    /**
-	 *
-	 */
 	private static final long serialVersionUID = 1L;
 	private final Player human;
     private final Player computer;
@@ -90,6 +87,8 @@ public class GameLogic implements Serializable {
             computer.getName() + " wins the game!";
     }
 
-    public Player getHumanPlayer() { return human; }
+    public Player getHumanPlayer() {
+    	return human;
+    }
     public Player getComputerPlayer() { return computer; }
 }

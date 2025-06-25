@@ -8,13 +8,18 @@ public class Deck {
 
     public Deck() {
         cards = new ArrayList<>();
+        
+        System.out.println("Loading Images...");
         initializeDeck();
+        
         shuffle();
+        System.out.println("Cards shuffled.");
     }
 
+    // method to initialize card data
     private void initializeDeck() {
-        String[] suits = {"Hearts", "Diamonds", "Clubs", "Spades"};
-        String[] ranks = {"2","3","4","5","6","7","8","9","10","Jack","Queen","King","Ace"};
+        String[] suits = {"hearts", "diamonds", "clubs", "spades"};
+        String[] ranks = {"2","3","4","5","6","7","8","9","10","jack","queen","king","ace"};
         int[] values = {2,3,4,5,6,7,8,9,10,11,12,13,14};
 
         for (String suit : suits) {
@@ -24,6 +29,7 @@ public class Deck {
         }
     }
 
+    // method to shuffle cards using collections library
     public void shuffle() {
         Collections.shuffle(cards);
     }

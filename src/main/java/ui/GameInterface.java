@@ -22,18 +22,26 @@ import java.awt.Insets;
 import java.awt.event.ActionListener;
 
 public class GameInterface extends JFrame {
-    /*
-	 *
-	 */
 	private static final long serialVersionUID = 1L;
 	private GameLogic game;
     private JLabel playerCardCount;
     private JLabel computerCardCount;
     private JTextArea gameLog;
+    private JLabel playerCardImage;
+    private JLabel computerCardImage;
+    
+    // Window Size
+    private int xDefaultSize = 1600;
+    private int yDefaultSize = 1200;
 
+    // Card Size
+    private int cardWidth = 120;
+    private int cardHeight = 180;
+    
+    // Constructor
     public GameInterface() {
         setTitle("War Card Game");
-        setSize(600, 500); // Set pixel size
+        setSize(xDefaultSize, yDefaultSize); // Set pixel size
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
 
@@ -44,6 +52,14 @@ public class GameInterface extends JFrame {
         startNewGame();
     }
 
+    // method to create menu items (on top)
+    private JMenuItem createMenuItem(String text, ActionListener action) {
+        JMenuItem item = new JMenuItem(text);
+        item.addActionListener(action);
+        return item;
+    }
+    
+    // set up the top menu
     private void setupMenu() {
         JMenuBar menuBar = new JMenuBar();
 
@@ -58,12 +74,6 @@ public class GameInterface extends JFrame {
         menuBar.add(fileMenu);
         menuBar.add(helpMenu);
         setJMenuBar(menuBar);
-    }
-
-    private JMenuItem createMenuItem(String text, ActionListener action) {
-        JMenuItem item = new JMenuItem(text);
-        item.addActionListener(action);
-        return item;
     }
 
     private void setupGameArea() {
