@@ -1,9 +1,14 @@
 package ui;
 
 // Minimal Swing/AWT imports
-import javax.swing.JFrame;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -16,30 +21,21 @@ import javax.swing.SwingConstants;
 
 import game.GameLogic;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.event.ActionListener;
-
 public class GameInterface extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private GameLogic game;
     private JLabel playerCardCount;
     private JLabel computerCardCount;
     private JTextArea gameLog;
-    
+
     private JPanel imagePanel;
     private JLabel playerCardImage;
     private JLabel computerCardImage;
-    
-    // Window Size
-    private int xDefaultSize = 1600;
-    private int yDefaultSize = 1200;
 
-    // Card Size
-    private int cardWidth = 120;
-    private int cardHeight = 180;
-    
+    // Window Size
+    private final int xDefaultSize = 800;
+    private final int yDefaultSize = 600;
+
     // Constructor
     public GameInterface() {
         setTitle("War Card Game");
@@ -60,7 +56,7 @@ public class GameInterface extends JFrame {
         item.addActionListener(action);
         return item;
     }
-    
+
     // set up the top menu
     private void setupMenu() {
         JMenuBar menuBar = new JMenuBar();
@@ -82,7 +78,7 @@ public class GameInterface extends JFrame {
         JPanel gamePanel = new JPanel(new BorderLayout(10, 10));
 
         // Game contexts
-        JPanel countPanel = new JPanel(new GridLayout(1, 2, 10, 10));
+        JPanel countPanel = new JPanel(new GridLayout(1, 2, 10, 10));     
         playerCardCount = new JLabel("Your cards: 26", SwingConstants.CENTER);
         computerCardCount = new JLabel("Computer cards: 26", SwingConstants.CENTER);
         countPanel.add(playerCardCount);
@@ -92,15 +88,20 @@ public class GameInterface extends JFrame {
         imagePanel = new JPanel(new GridLayout(1, 2, 10, 10));
         playerCardImage = new JLabel();
         computerCardImage = new JLabel();
+        
+        // add images once UI loads them..
         imagePanel.add(playerCardImage);
         imagePanel.add(computerCardImage);
-        
+
         gameLog = new JTextArea(10, 40);
         gameLog.setEditable(false);
         gameLog.setMargin(new Insets(5, 5, 5, 5));
 
         gamePanel.add(countPanel, BorderLayout.NORTH);
         gamePanel.add(new JScrollPane(gameLog), BorderLayout.CENTER);
+        
+        // add image panel once images rendered
+        gamePanel.add(imagePanel);
 
         add(gamePanel, BorderLayout.CENTER);
     }
@@ -116,23 +117,35 @@ public class GameInterface extends JFrame {
     }
 
     private void startNewGame() {
+    	// first option pane for user entry
         String name = JOptionPane.showInputDialog(this, "Enter your name:", "New Game", JOptionPane.PLAIN_MESSAGE);
+        
+        // if there is no name entered for user use "player" as default
         if (name == null || name.trim().isEmpty()) name = "Player";
 
+        // start up logic, update UI and set message
         game = new GameLogic(name);
         updateUI();
         gameLog.setText("New game started! Good luck, " + name + "!\n");
     }
 
+    // method to play round
     private void playRound() {
+    	
+    	// if no game instance start a new round
         if (game == null) {
             startNewGame();
             return;
         }
 
+        // start a round
         String result = game.playRound();
+        
+        // put result in gameLogs
         gameLog.append(result + "\n");
+        
         updateUI();
+        
         gameLog.setCaretPosition(gameLog.getDocument().getLength());
 
         if (!game.getHumanPlayer().hasCards() || !game.getComputerPlayer().hasCards()) {
@@ -146,6 +159,19 @@ public class GameInterface extends JFrame {
         if (game != null) {
             playerCardCount.setText("Your cards: " + game.getHumanPlayer().cardCount());
             computerCardCount.setText("Computer cards: " + game.getComputerPlayer().cardCount());
+
+            // Show last played cards
+            game.Card humanCard = game.getLastHumanCard();
+            game.Card computerCard = game.getLastComputerCard();
+            
+            /* set images for the cards */ 
+            // set images for player component
+            playerCardImage.setIcon(humanCard != null ? humanCard.getImageAndResize() : null);
+            playerCardImage.setHorizontalAlignment(SwingConstants.CENTER);
+            
+            // set images for computer component
+            computerCardImage.setIcon(computerCard != null ? computerCard.getImageAndResize() : null);
+            computerCardImage.setHorizontalAlignment(SwingConstants.CENTER);
         }
     }
 

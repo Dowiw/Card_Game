@@ -8,10 +8,10 @@ public class Deck {
 
     public Deck() {
         cards = new ArrayList<>();
-        
+
         System.out.println("Loading Images...");
         initializeDeck();
-        
+
         shuffle();
         System.out.println("Cards shuffled.");
     }

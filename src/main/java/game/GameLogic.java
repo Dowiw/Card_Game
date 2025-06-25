@@ -8,6 +8,10 @@ public class GameLogic implements Serializable {
 	private final Player human;
     private final Player computer;
     private transient ArrayList<Card> currentPot;
+    
+    // Track last played cards
+    private Card lastHumanCard;
+    private Card lastComputerCard;
 
     public GameLogic(String playerName) {
         this.human = new Player(playerName);
@@ -23,6 +27,9 @@ public class GameLogic implements Serializable {
 
         Card humanCard = human.playCard();
         Card computerCard = computer.playCard();
+        // Store last played cards
+        lastHumanCard = humanCard;
+        lastComputerCard = computerCard;
 
         if (humanCard == null || computerCard == null) {
             return gameOver();
@@ -58,6 +65,9 @@ public class GameLogic implements Serializable {
         // Add face-up cards
         Card humanCard = human.playCard();
         Card computerCard = computer.playCard();
+        // Store last played cards for war
+        lastHumanCard = humanCard;
+        lastComputerCard = computerCard;
 
         if (humanCard == null || computerCard == null) {
             return gameOver();
@@ -90,5 +100,17 @@ public class GameLogic implements Serializable {
     public Player getHumanPlayer() {
     	return human;
     }
-    public Player getComputerPlayer() { return computer; }
+
+    public Player getComputerPlayer() {
+        return computer;
+    }
+
+    // Getters for last played cards
+    public Card getLastHumanCard() {
+        return lastHumanCard;
+    }
+
+    public Card getLastComputerCard() {
+        return lastComputerCard;
+    }
 }
