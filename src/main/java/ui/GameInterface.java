@@ -27,6 +27,8 @@ public class GameInterface extends JFrame {
     private JLabel playerCardCount;
     private JLabel computerCardCount;
     private JTextArea gameLog;
+    
+    private JPanel imagePanel;
     private JLabel playerCardImage;
     private JLabel computerCardImage;
     
@@ -79,12 +81,20 @@ public class GameInterface extends JFrame {
     private void setupGameArea() {
         JPanel gamePanel = new JPanel(new BorderLayout(10, 10));
 
+        // Game contexts
         JPanel countPanel = new JPanel(new GridLayout(1, 2, 10, 10));
         playerCardCount = new JLabel("Your cards: 26", SwingConstants.CENTER);
         computerCardCount = new JLabel("Computer cards: 26", SwingConstants.CENTER);
         countPanel.add(playerCardCount);
         countPanel.add(computerCardCount);
 
+        // Card images
+        imagePanel = new JPanel(new GridLayout(1, 2, 10, 10));
+        playerCardImage = new JLabel();
+        computerCardImage = new JLabel();
+        imagePanel.add(playerCardImage);
+        imagePanel.add(computerCardImage);
+        
         gameLog = new JTextArea(10, 40);
         gameLog.setEditable(false);
         gameLog.setMargin(new Insets(5, 5, 5, 5));
