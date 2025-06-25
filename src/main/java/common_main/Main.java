@@ -14,7 +14,7 @@ public class Main {
         SwingUtilities.invokeLater(() -> {
             GameInterface window = new GameInterface();
             window.setLocationRelativeTo(null); // Set window to the center of the screen
-//          window.setResizable(false); // Disable window resizing
+            window.setResizable(false); // Disable window resizing
             window.setVisible(true);
         });
     }

@@ -2,6 +2,7 @@ package ui;
 
 // Minimal Swing/AWT imports
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
@@ -23,11 +24,14 @@ import game.GameLogic;
 
 public class GameInterface extends JFrame {
 	private static final long serialVersionUID = 1L;
+	
+	// panel structures
 	private GameLogic game;
     private JLabel playerCardCount;
     private JLabel computerCardCount;
-    private JTextArea gameLog;
+    private JLabel gameLog;
 
+    // image panels and labels
     private JPanel imagePanel;
     private JLabel playerCardImage;
     private JLabel computerCardImage;
@@ -74,31 +78,30 @@ public class GameInterface extends JFrame {
         setJMenuBar(menuBar);
     }
 
-    private void setupGameArea() {
+	private void setupGameArea() {
         JPanel gamePanel = new JPanel(new BorderLayout(10, 10));
+        gamePanel.setBackground(Color.PINK); // debug
 
-        // Game contexts
-        JPanel countPanel = new JPanel(new GridLayout(1, 2, 10, 10));     
+        // game counter panel for the card counts
+        JPanel countPanel = new JPanel(new GridLayout(1, 2, 10, 10));
         playerCardCount = new JLabel("Your cards: 26", SwingConstants.CENTER);
         computerCardCount = new JLabel("Computer cards: 26", SwingConstants.CENTER);
         countPanel.add(playerCardCount);
         countPanel.add(computerCardCount);
 
-        // Card images
-        imagePanel = new JPanel(new GridLayout(1, 2, 10, 10));
+        // card images and game status
+        imagePanel = new JPanel(new GridLayout(1, 3, 10, 10));
+        imagePanel.setBackground(Color.BLUE); // for debug, comment if unneeded.
+        gameLog = new JLabel("Fill Text.", SwingConstants.CENTER);
         playerCardImage = new JLabel();
         computerCardImage = new JLabel();
         
-        // add images once UI loads them..
+        // add images once UI loads them from left to right
         imagePanel.add(playerCardImage);
+        imagePanel.add(gameLog, BorderLayout.CENTER); // add game log in the center
         imagePanel.add(computerCardImage);
 
-        gameLog = new JTextArea(10, 40);
-        gameLog.setEditable(false);
-        gameLog.setMargin(new Insets(5, 5, 5, 5));
-
         gamePanel.add(countPanel, BorderLayout.NORTH);
-        gamePanel.add(new JScrollPane(gameLog), BorderLayout.CENTER);
         
         // add image panel once images rendered
         gamePanel.add(imagePanel);
@@ -142,11 +145,9 @@ public class GameInterface extends JFrame {
         String result = game.playRound();
         
         // put result in gameLogs
-        gameLog.append(result + "\n");
+        gameLog.setText(result);
         
         updateUI();
-        
-        gameLog.setCaretPosition(gameLog.getDocument().getLength());
 
         if (!game.getHumanPlayer().hasCards() || !game.getComputerPlayer().hasCards()) {
             JOptionPane.showMessageDialog(this,
@@ -160,7 +161,7 @@ public class GameInterface extends JFrame {
             playerCardCount.setText("Your cards: " + game.getHumanPlayer().cardCount());
             computerCardCount.setText("Computer cards: " + game.getComputerPlayer().cardCount());
 
-            // Show last played cards
+            // update last cards
             game.Card humanCard = game.getLastHumanCard();
             game.Card computerCard = game.getLastComputerCard();
             
@@ -185,7 +186,7 @@ public class GameInterface extends JFrame {
         if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
             try {
                 util.GameSaver.saveGame(game, chooser.getSelectedFile().getPath());
-                gameLog.append("Game saved successfully!\n");
+                gameLog.setText("Game saved successfully!");
             } catch (java.io.IOException e) {
                 JOptionPane.showMessageDialog(this, "Save failed: " + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
@@ -199,7 +200,7 @@ public class GameInterface extends JFrame {
             try {
                 game = util.GameSaver.loadGame(chooser.getSelectedFile().getPath());
                 updateUI();
-                gameLog.append("Game loaded successfully!\n");
+                gameLog.setText("Game loaded successfully!");
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Load failed: " + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
