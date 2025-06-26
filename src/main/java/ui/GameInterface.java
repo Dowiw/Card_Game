@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -17,15 +18,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.ImageIcon;
 
 import game.GameLogic;
 
-import ui.HorizontalStackLayout;
-
 public class GameInterface extends JFrame {
 	private static final long serialVersionUID = 1L;
-	
+
 	// panel structures
 	private GameLogic game;
 	private JPanel gamePanel;
@@ -37,6 +35,8 @@ public class GameInterface extends JFrame {
     private JPanel imagePanel;
     private JLabel playerCardImage;
     private JLabel computerCardImage;
+    // Add persistent stack panel for player's hand
+    private JPanel playerHandStackPanel;
 
     // Window Size
     private final int xDefaultSize = 800;
@@ -95,16 +95,15 @@ public class GameInterface extends JFrame {
         // card images and game status
         imagePanel = new JPanel(new GridLayout(1, 3, 10, 10));
         imagePanel.setBackground(Color.BLUE); // for debug, comment if unneeded.
-        gameLog = new JLabel("Fill Text.", SwingConstants.CENTER);
+        gameLog = new JLabel("Initial Text.", SwingConstants.CENTER);
         playerCardImage = new JLabel();
         computerCardImage = new JLabel();
-        
-        
+
         // add images once UI loads them from left to right
         imagePanel.add(playerCardImage);
         imagePanel.add(gameLog, BorderLayout.CENTER); // add game log in the center
         imagePanel.add(computerCardImage);
-        
+
         // add panels after render
         gamePanel.add(countPanel, BorderLayout.NORTH);
         gamePanel.add(imagePanel);
@@ -125,34 +124,28 @@ public class GameInterface extends JFrame {
     private void startNewGame() {
     	// first option pane for user entry
         String name = JOptionPane.showInputDialog(this, "Enter your name:", "New Game", JOptionPane.PLAIN_MESSAGE);
-        
+
         // if there is no name entered for user use "player" as default
         if (name == null || name.trim().isEmpty()) name = "Player";
 
         // start up logic, update UI and set message
         game = new GameLogic(name);
-        
-        JPanel playerHandStackPanel = new JPanel(new HorizontalStackLayout(30));
-        int amountOfPlayerCards = game.getHumanCards().size();
-        
-        for (int i = 0; i < amountOfPlayerCards; i++) {
-            ImageIcon backCard = game.getComputerPlayer().getCards().get(0).getBackOfCardImage();
-            
-            Image backImage = backCard.getImage();
-            Image newImage = backImage.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
-            
-            playerHandStackPanel.add(new JLabel(new ImageIcon(newImage)));
+
+        // Remove old stack panel if it exists
+        if (playerHandStackPanel != null) {
+            gamePanel.remove(playerHandStackPanel);
         }
-        
+        // Create and add new stack panel
+        playerHandStackPanel = createCardBackStack(game.getHumanCards().size());
         gamePanel.add(playerHandStackPanel, BorderLayout.SOUTH);
-        
+
         updateUI();
         gameLog.setText("New game started! Good luck, " + name + "!\n");
     }
 
     // method to play round
     private void playRound() {
-    	
+
     	// if no game instance start a new round
         if (game == null) {
             startNewGame();
@@ -161,13 +154,13 @@ public class GameInterface extends JFrame {
 
         // start a round
         String result;
-        
+
         if (game.isWarInProgress()) {
             result = game.handleWar();
         } else {
             result = game.playRound();
         }
-        
+
         // put result in gameLogs
         gameLog.setText(result);
         updateUI();
@@ -187,16 +180,38 @@ public class GameInterface extends JFrame {
             // update last cards
             game.Card humanCard = game.getLastHumanCard();
             game.Card computerCard = game.getLastComputerCard();
-            
-            /* set images for the cards */ 
+
+            /* set images for the cards */
             // set images for player component
             playerCardImage.setIcon(humanCard != null ? humanCard.getImageAndResize() : null);
             playerCardImage.setHorizontalAlignment(SwingConstants.CENTER);
-            
+
             // set images for computer component
             computerCardImage.setIcon(computerCard != null ? computerCard.getImageAndResize() : null);
             computerCardImage.setHorizontalAlignment(SwingConstants.CENTER);
+
+            // Update stack panel for player's hand
+            if (playerHandStackPanel != null) {
+                gamePanel.remove(playerHandStackPanel);
+            }
+            playerHandStackPanel = createCardBackStack(game.getHumanPlayer().cardCount());
+            gamePanel.add(playerHandStackPanel, BorderLayout.SOUTH);
+            gamePanel.revalidate();
+            gamePanel.repaint();
         }
+    }
+
+    // Helper method to create a stack of card backs
+    private JPanel createCardBackStack(int count) {
+        JPanel stackPanel = new JPanel(new HorizontalStackLayout(10)); // 10px overlap
+        if (game != null && game.getHumanPlayer().hasCards()) {
+            ImageIcon backIcon = game.getHumanPlayer().getCards().get(0).getBackOfCardImage();
+            for (int i = 0; i < count; i++) {
+                Image img = backIcon.getImage().getScaledInstance(30, 40, Image.SCALE_SMOOTH);
+                stackPanel.add(new JLabel(new ImageIcon(img)));
+            }
+        }
+        return stackPanel;
     }
 
     private void saveGame() {
@@ -232,14 +247,15 @@ public class GameInterface extends JFrame {
     }
 
     private void showAbout() {
-        JOptionPane.showMessageDialog(this,
-            "War Card Game\n" +
-            "Developed by: [Your Name]\n" +
-            "EU University - Summer 2025\n\n" +
-            "Rules:\n" +
-            "1. Highest card wins the round\n" +
-            "2. Equal cards trigger a war\n" +
-            "3. Winner takes all cards",
+        JOptionPane.showMessageDialog(this, """
+                                            War Card Game
+                                            Developed by: [Your Name]
+                                            EU University - Summer 2025
+
+                                            Rules:
+                                            1. Highest card wins the round
+                                            2. Equal cards trigger a war
+                                            3. Winner takes all cards""",
             "About", JOptionPane.INFORMATION_MESSAGE);
     }
 }

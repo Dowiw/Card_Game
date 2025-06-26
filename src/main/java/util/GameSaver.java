@@ -1,7 +1,13 @@
 package util;
 
+// imports for input and output stream for serialization
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import game.GameLogic;
-import java.io.*;
 
 public class GameSaver {
     public static void saveGame(GameLogic game, String filename) throws IOException {
