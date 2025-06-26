@@ -80,7 +80,7 @@ public class Card implements Serializable {
     }
 
     // method to look for Image in resources
-    private ImageIcon createImageIcon() {
+    public ImageIcon createImageIcon() {
     	String imagePath = "/cards/" + suit + "/" + getImageFileName();
 
         // URL to locate file (standard locator)
@@ -95,7 +95,7 @@ public class Card implements Serializable {
     }
 
     // getter for default cover
-    private ImageIcon getBackOfCardImage() {
+    public ImageIcon getBackOfCardImage() {
     	String coverPath = "/cards/card_commons/cover.png";
 
     	// URL to locate default cover

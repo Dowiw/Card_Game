@@ -4,6 +4,7 @@ package ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
@@ -16,14 +17,18 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.ImageIcon;
 
 import game.GameLogic;
+
+import ui.HorizontalStackLayout;
 
 public class GameInterface extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	// panel structures
 	private GameLogic game;
+	private JPanel gamePanel;
     private JLabel playerCardCount;
     private JLabel computerCardCount;
     private JLabel gameLog;
@@ -48,6 +53,7 @@ public class GameInterface extends JFrame {
         setupGameArea();
         setupControls();
 
+        // wait for user to enter name before starting
         startNewGame();
     }
 
@@ -76,7 +82,7 @@ public class GameInterface extends JFrame {
     }
 
 	private void setupGameArea() {
-        JPanel gamePanel = new JPanel(new BorderLayout(10, 10));
+        gamePanel = new JPanel(new BorderLayout(10, 10));
         gamePanel.setBackground(Color.PINK); // debug
 
         // game counter panel for the card counts
@@ -93,14 +99,14 @@ public class GameInterface extends JFrame {
         playerCardImage = new JLabel();
         computerCardImage = new JLabel();
         
+        
         // add images once UI loads them from left to right
         imagePanel.add(playerCardImage);
         imagePanel.add(gameLog, BorderLayout.CENTER); // add game log in the center
         imagePanel.add(computerCardImage);
-
-        gamePanel.add(countPanel, BorderLayout.NORTH);
         
-        // add image panel once images rendered
+        // add panels after render
+        gamePanel.add(countPanel, BorderLayout.NORTH);
         gamePanel.add(imagePanel);
 
         add(gamePanel, BorderLayout.CENTER);
@@ -125,6 +131,21 @@ public class GameInterface extends JFrame {
 
         // start up logic, update UI and set message
         game = new GameLogic(name);
+        
+        JPanel playerHandStackPanel = new JPanel(new HorizontalStackLayout(30));
+        int amountOfPlayerCards = game.getHumanCards().size();
+        
+        for (int i = 0; i < amountOfPlayerCards; i++) {
+            ImageIcon backCard = game.getComputerPlayer().getCards().get(0).getBackOfCardImage();
+            
+            Image backImage = backCard.getImage();
+            Image newImage = backImage.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+            
+            playerHandStackPanel.add(new JLabel(new ImageIcon(newImage)));
+        }
+        
+        gamePanel.add(playerHandStackPanel, BorderLayout.SOUTH);
+        
         updateUI();
         gameLog.setText("New game started! Good luck, " + name + "!\n");
     }
@@ -146,12 +167,9 @@ public class GameInterface extends JFrame {
         } else {
             result = game.playRound();
         }
-        gameLog.setText(result);
-        updateUI();
         
         // put result in gameLogs
         gameLog.setText(result);
-        
         updateUI();
 
         if (!game.getHumanPlayer().hasCards() || !game.getComputerPlayer().hasCards()) {
@@ -224,22 +242,4 @@ public class GameInterface extends JFrame {
             "3. Winner takes all cards",
             "About", JOptionPane.INFORMATION_MESSAGE);
     }
-    
-//    JPanel playerHandPanel = new JPanel();
-//    playerHandPanel.setLayout(new FlowLayout(FlowLayout.LEFT)); // or new BoxLayout(playerHandPanel, BoxLayout.X_AXIS)
-//
-//    // Clear previous images
-//    playerHandPanel.removeAll();
-//
-//    // Show up to 5 cards
-//    int cardsToShow = Math.min(5, player.getCards().size());
-//    for (int i = 0; i < cardsToShow; i++) {
-//        Card card = player.getCards().get(i);
-//        JLabel cardLabel = new JLabel(new ImageIcon(card.getImagePath())); // You'll need a method to get image paths for cards
-//        playerHandPanel.add(cardLabel);
-//    }
-//
-//    // Refresh UI
-//    playerHandPanel.revalidate();
-//    playerHandPanel.repaint();
 }

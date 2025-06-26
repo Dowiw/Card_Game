@@ -9,16 +9,16 @@ public class GameLogic implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private final Player human;
     private final Player computer;
-    private transient ArrayList<Card> currentPot;
+    private ArrayList<Card> currentPot;
     
-    private transient boolean warInProgress = false;
+    private boolean warInProgress = false;
     
-    private transient ArrayList<Card> humanCards;
-    private transient ArrayList<Card> computerCards;
+    private ArrayList<Card> humanCards;
+    private ArrayList<Card> computerCards;
     
     // Track last played cards
-    private transient Card lastHumanCard;
-    private transient Card lastComputerCard;
+    private Card lastHumanCard;
+    private Card lastComputerCard;
 
     // Gamelogic Constructor
     public GameLogic(String playerName) {
@@ -63,7 +63,7 @@ public class GameLogic implements Serializable {
         System.out.println("Rank: " + lastHumanCard.getRank() + " Suit: " + lastHumanCard.getSuit() + " Value: " + lastHumanCardValue);
         System.out.println("Rank: " + lastComputerCard.getRank() + " Suit: " + lastComputerCard.getSuit() + " Value: " + lastComputerCardValue);
 
-        // end when there is a war to 
+        // end when there is a war to continue game state
         if (comparison == 0) {
         	warInProgress = true;
         	return ("There is a WAR in progress!");

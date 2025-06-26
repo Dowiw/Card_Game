@@ -3,6 +3,8 @@ package game;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import javax.swing.ImageIcon;
+
 public class Deck {
     private final ArrayList<Card> cards;
 
@@ -36,5 +38,9 @@ public class Deck {
             if (i % 2 == 0) player1.receiveCard(cards.get(i));
             else player2.receiveCard(cards.get(i));
         }
+    }
+    
+    public ImageIcon getBackOfCardImage() {
+    	return (cards.getFirst().getBackOfCardImage());
     }
 }
