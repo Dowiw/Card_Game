@@ -3,16 +3,13 @@
 A project about a war card game.
 
 The purpose of this project is to develop a Card Game program with a
-Graphical User Interface that the Player can play with the Computer or
-other player.
+Graphical User Interface.
 
-The program will be written in Java and should have a user-friendly graphical user interface (GUI) to enhance usability, in addition to
-save and Capability, so the user can continue the game from where he
-finished.
+The program will be written in Java and have a GUI with saving capabilities so the user can continue the game from a saved state.
 
 Done in fulfillment of the Back-end Development Course for the 2025 Summer Semester.
 
-This project was built for the Eclipse IDE but can migrate towards... {fill}.
+This project was built for the Eclipse IDE.
 
 ## Dependencies
 
@@ -130,3 +127,6 @@ Project.
 your design.
 - There is no pre-defined design or how the game will be at the
 end, the winning group game will be given 10 extra points.
+
+> made in Java,
+> KB, Fatih, Konstiantyn, Shukrulloh, Ezra, Ferds
