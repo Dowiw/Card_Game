@@ -6,8 +6,13 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.LayoutManager;
 
+/*
+ * Custom layout manager for stacking cards:
+ * - Calculates 
+ *
+ */
 public class HorizontalStackLayout implements LayoutManager {
-	private int overlap;
+	private final int overlap;
 
 	public HorizontalStackLayout(int overlap) {
 		this.overlap = overlap;
@@ -33,9 +38,9 @@ public class HorizontalStackLayout implements LayoutManager {
 		for (int i = 0; i < n; i++) {
 			Component comp = parent.getComponent(i);
 			Dimension d = comp.getPreferredSize();
-			if (i == 0) {
+			if (i == 0) { // for the first card do not change the width
 				width += d.width;
-			} else {
+			} else { // for the next cards have an overlap
 				width += (d.width - overlap);
 			}
 			height = Math.max(height, d.height);

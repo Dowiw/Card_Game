@@ -8,7 +8,10 @@ import javax.swing.JPanel;
 
 import util.ImageManager;
 
-// customized component for setting the background of imagePanel
+/*
+ * customized component for setting the background of imagePanel 
+ * & more features if needed
+ */
 public final class GamePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 

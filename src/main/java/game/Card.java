@@ -23,8 +23,8 @@ public final class Card implements Serializable {
 
     // Constructor
     public Card(String suit, String rank, int value) {
-        this.suit = suit.toLowerCase();
-        this.rank = rank.toLowerCase();
+        this.suit = suit;
+        this.rank = rank;
         this.value = value;
     }
 
@@ -41,30 +41,32 @@ public final class Card implements Serializable {
     	return suit;
     }
 
+    // get the image icon from the image manager
 	public ImageIcon getImageIcon() {
 		String path = "/cards/" + suit + "/" + getImageFileName();
 		return ImageManager.getImage(path, CARD_WIDTH, CARD_HEIGHT);
 	}
 
+	// to string, is basically when the object is called, its details get printed
     @Override
     public String toString() {
-    	return (rank + " of " + suit);
+    	// capitalize the first letter of the rank & suit
+    	String capRank = rank.substring(0, 1).toUpperCase() + rank.substring(1);
+    	String capSuit = suit.substring(0, 1).toUpperCase() + suit.substring(1);
+    	
+    	return (capRank + " of " + capSuit);
     }
 
-    // method to return file path of image
+    // method to return file name of image
     private String getImageFileName() {
         String rankFile;
-        switch (rank) {
-            case "jack": rankFile = "jack";
-            break;
-            case "queen": rankFile = "queen";
-            break;
-            case "king": rankFile = "king";
-            break;
-            case "ace": rankFile = "ace";
-            break;
-            default: rankFile = rank; // For number cards (2-10)
-        }
+        rankFile = switch (rank) {
+                case "jack" -> "jack";
+                case "queen" -> "queen";
+                case "king" -> "king";
+                case "ace" -> "ace";
+                default -> rank;
+            }; // For number cards (2-10)
         return (rankFile + "_of_" + suit + ".png");
     }
 

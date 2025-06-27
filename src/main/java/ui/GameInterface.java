@@ -19,9 +19,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import game.Card;
 import game.GameLogic;
 import util.ImageManager;
 
+/*
+ * Class for the interface (JFrame):
+ * - Game Management
+ * - UI Management
+ */
 public class GameInterface extends JFrame {
 	private static final long serialVersionUID = 1L;
 
@@ -85,8 +91,7 @@ public class GameInterface extends JFrame {
 	}
 
 	private void setupGameArea() {
-		gamePanel = new JPanel(new BorderLayout(10, 10));
-		gamePanel.setBackground(Color.PINK); // debug
+		gamePanel = new EdgePanel(10, 10);
 
 		// game counter panel for the card counts
 		JPanel countPanel = new JPanel(new GridLayout(1, 2, 10, 10));
@@ -99,6 +104,7 @@ public class GameInterface extends JFrame {
 		imagePanel = new GamePanel(1, 3, 10, 10);
 		// imagePanel.setBackground(Color.BLUE); // for debug, comment if unneeded.
 		gameLog = new JLabel("Initial Text.", SwingConstants.CENTER);
+		gameLog.setForeground(Color.WHITE);
 		playerCardImage = new JLabel();
 		computerCardImage = new JLabel();
 
@@ -209,7 +215,7 @@ public class GameInterface extends JFrame {
 		// if game is not ending yet and human player has cards
 		if (game != null && game.getHumanPlayer().hasCards()) {
 			// get cover.png
-			ImageIcon backIcon = game.getHumanPlayer().getCards().get(0).getBackOfCardImage();
+			ImageIcon backIcon = Card.getBackOfCardImage();
 			// loop and add them into the stackPanel
 			for (int i = 0; i < count; i++) {
 				// scale the image to 30 by 40 pixels

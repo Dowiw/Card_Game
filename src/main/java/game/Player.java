@@ -3,11 +3,17 @@ package game;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/*
+ * Player class:
+ * - Stores name as string
+ * - Stores cards as ArrayList
+ */
 public class Player implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private final String name;
 	private final ArrayList<Card> cards;
 
+	// constructor
 	public Player(String name) {
 		this.name = name;
 		this.cards = new ArrayList<>();

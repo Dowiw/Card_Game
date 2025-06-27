@@ -5,6 +5,12 @@ import java.util.Collections;
 
 import javax.swing.ImageIcon;
 
+/*
+ * Manages Cards:
+ * - Stores them first to an ArrayList
+ * - Shuffles the cards
+ * - Distributes cards to players
+ */
 public class Deck {
 	private final ArrayList<Card> cards;
 
@@ -41,6 +47,6 @@ public class Deck {
 	}
 
 	public ImageIcon getBackOfCardImage() {
-		return (cards.getFirst().getBackOfCardImage());
+		return (Card.getBackOfCardImage());
 	}
 }

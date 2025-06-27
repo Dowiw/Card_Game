@@ -8,6 +8,11 @@ import java.io.ObjectOutputStream;
 
 import game.GameLogic;
 
+/*
+ * Class that does the Saving and Loading:
+ * - Stores gameLogic into a file
+ * - Loads the gameLogic from a file
+ */
 public class GameSaver {
 	public static void saveGame(GameLogic game, String filename) throws IOException {
 		try (ObjectOutputStream out = new ObjectOutputStream(
@@ -20,6 +25,7 @@ public class GameSaver {
 		try (ObjectInputStream in = new ObjectInputStream(
 			new FileInputStream(filename))) {
 			GameLogic loaded = (GameLogic) in.readObject();
+
 			// Reinitialize transient field
 			loaded.getHumanPlayer().getCards();
 			loaded.getComputerPlayer().getCards();
