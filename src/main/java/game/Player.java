@@ -6,34 +6,34 @@ import java.util.ArrayList;
 public class Player implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private final String name;
-    private final ArrayList<Card> cards;
+	private final ArrayList<Card> cards;
 
-    public Player(String name) {
-        this.name = name;
-        this.cards = new ArrayList<>();
-    }
+	public Player(String name) {
+		this.name = name;
+		this.cards = new ArrayList<>();
+	}
 
-    public void receiveCard(Card card) {
-        cards.add(card);
-    }
-    
-    public Card playCard() {
-        return cards.isEmpty() ? null : cards.remove(0);
-    }
+	public void receiveCard(Card card) {
+		cards.add(card);
+	}
 
-    public boolean hasCards() {
-        return !cards.isEmpty();
-    }
+	public Card playCard() {
+		return cards.isEmpty() ? null : cards.remove(0);
+	}
 
-    public int cardCount() {
-        return cards.size();
-    }
+	public boolean hasCards() {
+		return !cards.isEmpty();
+	}
 
-    public String getName() {
-        return name;
-    }
+	public int cardCount() {
+		return cards.size();
+	}
 
-    public ArrayList<Card> getCards() {
-        return cards;
-    }
+	public String getName() {
+		return name;
+	}
+
+	public ArrayList<Card> getCards() {
+		return cards;
+	}
 }
