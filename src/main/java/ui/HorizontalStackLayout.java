@@ -8,8 +8,8 @@ import java.awt.LayoutManager;
 
 /*
  * Custom layout manager for stacking cards:
- * - Calculates 
- *
+ * - Calculates the cards stacking on top of one another
+ * - Custom graphic drawer
  */
 public class HorizontalStackLayout implements LayoutManager {
 	private final int overlap;
