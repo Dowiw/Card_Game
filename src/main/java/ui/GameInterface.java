@@ -6,7 +6,11 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionListener;
+import java.net.URL;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -42,12 +46,16 @@ public class GameInterface extends JFrame {
 	private JPanel imagePanel;
 	private JLabel playerCardImage;
 	private JLabel computerCardImage;
+	
 	// Add persistent stack panel for player's hand
 	private JPanel playerHandStackPanel;
 
 	// Window Size
 	private final int xDefaultSize = 800;
 	private final int yDefaultSize = 600;
+	
+	// last feature: background music
+	private Clip backgroundClip;
 
 	// Constructor
 	public GameInterface() {
@@ -82,10 +90,18 @@ public class GameInterface extends JFrame {
 		fileMenu.add(createMenuItem("Save Game", e -> saveGame()));
 		fileMenu.add(createMenuItem("Load Game", e -> loadGame()));
 
+	    // === New: Music Menu ===
+	    JMenu musicMenu = new JMenu("Music");
+	    JMenuItem musicOnItem = createMenuItem("On", e -> playBackgroundMusic());
+	    JMenuItem musicOffItem = createMenuItem("Off", e -> stopBackgroundMusic());
+	    musicMenu.add(musicOnItem);
+	    musicMenu.add(musicOffItem);
+		
 		JMenu helpMenu = new JMenu("Help");
 		helpMenu.add(createMenuItem("About", e -> showAbout()));
 
 		menuBar.add(fileMenu);
+		menuBar.add(musicMenu);
 		menuBar.add(helpMenu);
 		setJMenuBar(menuBar);
 	}
@@ -102,6 +118,7 @@ public class GameInterface extends JFrame {
 
 		// card images and game status
 		imagePanel = new GamePanel(1, 3, 10, 10);
+		
 		// imagePanel.setBackground(Color.BLUE); // for debug, comment if unneeded.
 		gameLog = new JLabel("Initial Text.", SwingConstants.CENTER);
 		gameLog.setForeground(Color.WHITE);
@@ -150,6 +167,8 @@ public class GameInterface extends JFrame {
 
 		updateUI();
 		gameLog.setText("New game started! Good luck, " + name + "!\n");
+		
+		playBackgroundMusic();
 	}
 
 	// method to play round
@@ -226,32 +245,41 @@ public class GameInterface extends JFrame {
 		return stackPanel;
 	}
 
+	// store the data into GameSaver
 	private void saveGame() {
+		// if no game, print GTFO & error message
 		if (game == null) {
 			JOptionPane.showMessageDialog(this, "No game to save!", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
+		// create a chooser swing
 		javax.swing.JFileChooser chooser = new javax.swing.JFileChooser();
 		if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
 			try {
+				// try to save the game
 				util.GameSaver.saveGame(game, chooser.getSelectedFile().getPath());
 				gameLog.setText("Game saved successfully!");
 			} catch (java.io.IOException e) {
+				// print error and GTFO
 				JOptionPane.showMessageDialog(this, "Save failed: " + e.getMessage(),
 					"Error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
 
+	// load the data from GameSaver
 	private void loadGame() {
+		// call swing right away
 		javax.swing.JFileChooser chooser = new javax.swing.JFileChooser();
 		if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 			try {
+				// load game based on selected file
 				game = util.GameSaver.loadGame(chooser.getSelectedFile().getPath());
 				updateUI();
 				gameLog.setText("Game loaded successfully!");
 			} catch (Exception e) {
+				// if cannot be loaded, print errors
 				JOptionPane.showMessageDialog(this, "Load failed: " + e.getMessage(),
 					"Error", JOptionPane.ERROR_MESSAGE);
 			}
@@ -261,13 +289,49 @@ public class GameInterface extends JFrame {
 	private void showAbout() {
 		JOptionPane.showMessageDialog(this, """
 											War Card Game
-											Developed by: [Your Name]
-											EU University - Summer 2025
+											Developed by:
+											Kabuniang Buhawi Monjardin
+											Fatih Selim Salihoglu
+											Kostiantyn Ivanchenko
+											Shukurolloh Abdulbokiev
+											Ezra Runnath
+											Fernando Belloza
 
 											Rules:
 											1. Highest card wins the round
 											2. Equal cards trigger a war
 											3. Winner takes all cards""",
 				"About", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	// === last feature: Background music ===
+	private void playBackgroundMusic() {
+	    try {
+	        if (backgroundClip != null && backgroundClip.isRunning()) {
+	            System.out.println("Music already playing.");
+	            return;
+	        }
+	        URL soundURL = getClass().getResource("/audio/main_bg.wav");
+	        if (soundURL == null) {
+	            System.err.println("Audio file not found!");
+	            return;
+	        }
+	        AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundURL);
+	        backgroundClip = AudioSystem.getClip();
+	        backgroundClip.open(audioIn);
+	        backgroundClip.loop(Clip.LOOP_CONTINUOUSLY);
+//	        System.out.println("Background music started.");
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
+
+	// Optional: Call this when closing the game to stop music cleanly
+	public void stopBackgroundMusic() {
+		if (backgroundClip != null && backgroundClip.isRunning()) {
+			backgroundClip.stop();
+			backgroundClip.close();
+//			System.out.println("Background music stopped.");
+		}
 	}
 }

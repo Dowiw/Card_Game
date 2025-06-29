@@ -17,13 +17,13 @@ public class Deck {
 	public Deck() {
 		cards = new ArrayList<>();
 
-		System.out.println("Loading Images...");
+//		System.out.println("Loading Images...");
 		initializeDeck();
 
 		// shuffle cards using shuffle method
 		Collections.shuffle(cards);
 
-		System.out.println("Cards shuffled.");
+//		System.out.println("Cards shuffled.");
 	}
 
 	// method to initialize card data

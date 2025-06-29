@@ -67,9 +67,9 @@ public class GameLogic implements Serializable {
 		int lastComputerCardValue = lastComputerCard.getValue();
 
 		int comparison = lastHumanCardValue - lastComputerCardValue;
-		System.out.println("Comparison: " + comparison);
-		System.out.println("Rank: " + lastHumanCard.getRank() + " Suit: " + lastHumanCard.getSuit() + " Value: " + lastHumanCardValue);
-		System.out.println("Rank: " + lastComputerCard.getRank() + " Suit: " + lastComputerCard.getSuit() + " Value: " + lastComputerCardValue);
+//		System.out.println("Comparison: " + comparison);
+//		System.out.println("Rank: " + lastHumanCard.getRank() + " Suit: " + lastHumanCard.getSuit() + " Value: " + lastHumanCardValue);
+//		System.out.println("Rank: " + lastComputerCard.getRank() + " Suit: " + lastComputerCard.getSuit() + " Value: " + lastComputerCardValue);
 
 		// end when there is a war to continue game state
 		if (comparison == 0) {
@@ -85,7 +85,7 @@ public class GameLogic implements Serializable {
 			Collections.shuffle(computerCards);
 			// clear current pot for next round
 			currentPot.clear();
-			System.out.println(human.getName() + " wins with " + lastHumanCard);
+//			System.out.println(human.getName() + " wins with " + lastHumanCard);
 			return (human.getName() + " wins with " + lastHumanCard);
 		} else if (comparison < 0) { // if computer value is greater (computer wins round)
 			// computer gets all cards
@@ -95,7 +95,7 @@ public class GameLogic implements Serializable {
 			Collections.shuffle(computerCards);
 			// clear pot for next round
 			currentPot.clear();
-			System.out.println(computer.getName() + " wins with " + lastComputerCard);
+//			System.out.println(computer.getName() + " wins with " + lastComputerCard);
 			return (computer.getName() + " wins with " + lastComputerCard);
 		} else { // there is war for comparison 0
 			warInProgress = true;
@@ -141,18 +141,18 @@ public class GameLogic implements Serializable {
 		int lastComputerCardValue = lastComputerCard.getValue();
 		int comparison = lastHumanCardValue - lastComputerCardValue;
 
-		// print out results to console
-		System.out.println("Comparison: " + comparison);
-		System.out.println("Rank: " + lastHumanCard.getRank() + " Suit: " + lastHumanCard.getSuit() + " Value: " + lastHumanCardValue);
-		System.out.println("Rank: " + lastComputerCard.getRank() + " Suit: " + lastComputerCard.getSuit() + " Value: " + lastComputerCardValue);
+//		// print out results to console
+//		System.out.println("Comparison: " + comparison);
+//		System.out.println("Rank: " + lastHumanCard.getRank() + " Suit: " + lastHumanCard.getSuit() + " Value: " + lastHumanCardValue);
+//		System.out.println("Rank: " + lastComputerCard.getRank() + " Suit: " + lastComputerCard.getSuit() + " Value: " + lastComputerCardValue);
 
-		//
+		
 		if (comparison > 0) { // if human value is greater (human wins round)
 			humanCards.addAll(currentPot);
 			Collections.shuffle(humanCards);
 			Collections.shuffle(computerCards);
 			currentPot.clear();
-			System.out.println(human.getName() + " wins with " + lastHumanCard); // print out
+//			System.out.println(human.getName() + " wins with " + lastHumanCard); // print out
 
 			// end war
 			warInProgress = false;
@@ -163,7 +163,7 @@ public class GameLogic implements Serializable {
 			Collections.shuffle(computerCards);
 			currentPot.clear();
 
-			System.out.println(computer.getName() + " wins with " + lastComputerCard);
+//			System.out.println(computer.getName() + " wins with " + lastComputerCard);
 
 			// end war
 			warInProgress = false;
